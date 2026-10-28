@@ -5,25 +5,30 @@ import Camara from "./components/Camara";
 import Ubicacion from "./components/Ubicacion";
 import Brujula from "./components/Brujula";
 
-const PANTALLAS = ["Camara", "Ubicacion", "Brujula"];
-
 export default function App() {
   const [pantalla, setPantalla] = useState("Camara");
 
   return (
     <View style={styles.container}>
       <View style={styles.menu}>
-        {PANTALLAS.map((nombre) => (
-          <Pressable
-            key={nombre}
-            style={[styles.tab, pantalla === nombre && styles.tabActiva]}
-            onPress={() => setPantalla(nombre)}
-          >
-            <Text style={[styles.textoTab, pantalla === nombre && styles.textoTabActiva]}>
-              {nombre}
-            </Text>
-          </Pressable>
-        ))}
+        <Pressable
+          style={[styles.tab, pantalla === "Camara" && styles.tabActiva]}
+          onPress={() => setPantalla("Camara")}
+        >
+          <Text style={[styles.textoTab, pantalla === "Camara" && styles.textoTabActiva]}>Camara</Text>
+        </Pressable>
+        <Pressable
+          style={[styles.tab, pantalla === "Ubicacion" && styles.tabActiva]}
+          onPress={() => setPantalla("Ubicacion")}
+        >
+          <Text style={[styles.textoTab, pantalla === "Ubicacion" && styles.textoTabActiva]}>Ubicacion</Text>
+        </Pressable>
+        <Pressable
+          style={[styles.tab, pantalla === "Brujula" && styles.tabActiva]}
+          onPress={() => setPantalla("Brujula")}
+        >
+          <Text style={[styles.textoTab, pantalla === "Brujula" && styles.textoTabActiva]}>Brujula</Text>
+        </Pressable>
       </View>
 
       {pantalla === "Camara" && <Camara />}
