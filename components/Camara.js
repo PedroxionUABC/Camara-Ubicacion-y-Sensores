@@ -7,11 +7,17 @@ export default function Camara() {
   const [permission, requestPermission] = useCameraPermissions();
   const [fotoUri, setFotoUri] = useState(null);
   const [camaraLista, setCamaraLista] = useState(false);
+  const [error, setError] = useState(null);
 
   async function tomarFoto() {
     if (!camaraLista) return;
-    const foto = await cameraRef.current?.takePictureAsync();
-    if (foto?.uri) setFotoUri(foto.uri);
+    setError(null);
+    try {
+      const foto = await cameraRef.current?.takePictureAsync();
+      if (foto?.uri) setFotoUri(foto.uri);
+    } catch (e) {
+      setError("Hubo un error al tomar la foto");
+    }
   }
 
   // permiso pendiente
@@ -57,6 +63,8 @@ export default function Camara() {
           <Text style={styles.textoBoton}>Tomar foto</Text>
         </Pressable>
 
+        {error && <Text style={styles.error}>{error}</Text>}
+
         {fotoUri && <Image source={{ uri: fotoUri }} style={styles.foto} />}
       </View>
     </View>
@@ -100,6 +108,10 @@ const styles = StyleSheet.create({
   panel: {
     padding: 16,
     alignItems: "center",
+  },
+  error: {
+    color: "#b91c1c",
+    marginTop: 8,
   },
   foto: {
     width: 120,
