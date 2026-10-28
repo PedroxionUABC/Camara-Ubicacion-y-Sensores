@@ -7,23 +7,11 @@ export default function Camara() {
   const [permission, requestPermission] = useCameraPermissions();
   const [fotoUri, setFotoUri] = useState(null);
   const [camaraLista, setCamaraLista] = useState(false);
-  const [capturando, setCapturando] = useState(false);
-  const [error, setError] = useState(null);
 
   async function tomarFoto() {
-    // No capturar si la camara no esta lista o si se esta tomando la foto
-    if (!camaraLista || capturando) return;
-    setCapturando(true);
-    setError(null);
-    try {
-      // TOMAR FOTO
-      const foto = await cameraRef.current?.takePictureAsync();
-      if (foto?.uri) setFotoUri(foto.uri);
-    } catch (e) {
-      setError("Hubo un error al tomar la foto");
-    } finally {
-      setCapturando(false);
-    }
+    if (!camaraLista) return;
+    const foto = await cameraRef.current?.takePictureAsync();
+    if (foto?.uri) setFotoUri(foto.uri);
   }
 
   // permiso pendiente
@@ -64,21 +52,12 @@ export default function Camara() {
         <Pressable
           style={styles.boton}
           onPress={tomarFoto}
-          disabled={!camaraLista || capturando}
+          disabled={!camaraLista}
         >
-          <Text style={styles.textoBoton}>
-            {capturando ? "Capturando…" : camaraLista ? "Tomar foto" : "Cargando…"}
-          </Text>
+          <Text style={styles.textoBoton}>Tomar foto</Text>
         </Pressable>
 
-        {error && <Text style={styles.error}>{error}</Text>}
-
-        {fotoUri && (
-          <>
-            <Text style={styles.etiqueta}>Ultima foto:</Text>
-            <Image source={{ uri: fotoUri }} style={styles.foto} />
-          </>
-        )}
+        {fotoUri && <Image source={{ uri: fotoUri }} style={styles.foto} />}
       </View>
     </View>
   );
@@ -121,15 +100,6 @@ const styles = StyleSheet.create({
   panel: {
     padding: 16,
     alignItems: "center",
-  },
-  error: {
-    color: "#b91c1c",
-    marginTop: 8,
-  },
-  etiqueta: {
-    marginTop: 12,
-    marginBottom: 4,
-    fontSize: 14,
   },
   foto: {
     width: 120,

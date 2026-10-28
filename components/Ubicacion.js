@@ -8,7 +8,6 @@ export default function Ubicacion() {
   const [error, setError] = useState(null);
 
   async function obtenerUbicacion() {
-    if (cargando) return;
     setCargando(true);
     setError(null);
     try {
@@ -50,7 +49,7 @@ export default function Ubicacion() {
           <Text style={styles.texto}>Latitud: {coords.latitude.toFixed(6)}</Text>
           <Text style={styles.texto}>Longitud: {coords.longitude.toFixed(6)}</Text>
           <Text style={styles.texto}>
-            Precision reportada: {coords.accuracy != null ? `${coords.accuracy.toFixed(1)} m` : "no disponible"}
+            Precision reportada: {coords.accuracy.toFixed(1)} m
           </Text>
         </View>
       )}
